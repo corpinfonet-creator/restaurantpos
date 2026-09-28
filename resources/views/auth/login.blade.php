@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar Sesión - Restaurante POS</title>
+    <title>Iniciar Sesión - Kayu POS</title>
     @vite(['resources/css/app.scss', 'resources/js/app.js'])
     <style>
         body {
@@ -37,7 +37,7 @@
 
     <div class="card login-card">
         <div class="login-header">
-            <h3 class="fw-bold mb-0">Restaurante POS</h3>
+            <h3 class="fw-bold mb-0">Kayu POS</h3>
             <small>Sistema de Gestión Profesional</small>
         </div>
         <div class="card-body p-4">
