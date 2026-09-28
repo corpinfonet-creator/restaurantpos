@@ -48,10 +48,16 @@ while [ $i -le 30 ]; do
         echo ""
         echo "      DB_URL      = $([ -n "${DB_URL}" ] && echo "(definida)" || echo "(vacía)")"
         echo ""
-        echo "    Si DB_HOST muestra algo como \${{...}} sin resolver, las"
-        echo "    variables se copiaron como texto en vez de referenciar al"
-        echo "    servicio. Deben escribirse así, con el nombre del servicio:"
-        echo "      DB_HOST=\${{MySQL.MYSQLHOST}}"
+        echo "    Error que devuelve MySQL:"
+        php artisan db:monitor 2>&1 | tail -5 | sed "s/^/      /"
+        echo ""
+        echo "    Si DB_HOST muestra algo como \${{...}} sin resolver, el"
+        echo "    nombre del servicio en la referencia no coincide con el"
+        echo "    nombre real de la base de datos en el canvas de Railway."
+        echo ""
+        echo "    Servicios visibles en la red privada del proyecto:"
+        env | grep -iE "^(MYSQL|DATABASE|PG)" | cut -d= -f1 | sed "s/^/      /" || \
+            echo "      (ninguna variable de base de datos en el entorno)"
         exit 1
     fi
     sleep 2
