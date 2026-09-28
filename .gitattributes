@@ -9,3 +9,9 @@
 /.github export-ignore
 CHANGELOG.md export-ignore
 .styleci.yml export-ignore
+
+# Los scripts de arranque corren dentro del contenedor Linux. Un final de
+# línea CRLF los rompe con un error difícil de leer ("no such file or
+# directory" apuntando al intérprete), así que se fuerzan a LF.
+*.sh text eol=lf
+Dockerfile text eol=lf

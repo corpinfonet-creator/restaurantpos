@@ -23,6 +23,28 @@ mkdir -p storage/app/public/products \
 # --force: sobrescribe un enlace anterior en vez de fallar.
 php artisan storage:link --force
 
+# Espera a que MySQL acepte conexiones. En el primer despliegue la base de
+# datos puede tardar unos segundos más que la aplicación en estar lista, y sin
+# esta espera `migrate` falla y (por set -e) tumba el contenedor entero: se ve
+# como un fallo de despliegue cuando en realidad solo faltaba esperar.
+echo "==> Esperando a la base de datos"
+i=1
+while [ $i -le 30 ]; do
+    if php -r "new PDO(\
+        \"mysql:host=\".getenv(\"DB_HOST\").\";port=\".(getenv(\"DB_PORT\") ?: 3306),\
+        getenv(\"DB_USERNAME\"), getenv(\"DB_PASSWORD\"));" >/dev/null 2>&1; then
+        echo "    conectado"
+        break
+    fi
+    if [ $i -eq 30 ]; then
+        echo "    ERROR: sin conexión a la base de datos tras 60s."
+        echo "    Revisa las variables DB_* del servicio en Railway."
+        exit 1
+    fi
+    sleep 2
+    i=$((i + 1))
+done
+
 # --force: en producción migrate pide confirmación interactiva y aquí no hay
 # quien la dé. Solo aplica lo pendiente; si no hay nada, no hace nada.
 echo "==> Migraciones"
