@@ -15,6 +15,22 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Comprobación de licencia activada
+    |--------------------------------------------------------------------------
+    |
+    | Con LICENCIA_ACTIVA=false el sistema opera sin exigir licencia. Sirve
+    | para la puesta en marcha y para demostraciones, antes de que exista la
+    | licencia definitiva del cliente.
+    |
+    | El valor por defecto es true: si la variable no está definida, la
+    | comprobación sigue funcionando. Desactivarla debe ser siempre un acto
+    | deliberado y nunca el resultado de un despiste en la configuración.
+    |
+    */
+    'activa' => filter_var(env('LICENCIA_ACTIVA', true), FILTER_VALIDATE_BOOLEAN),
+
+    /*
+    |--------------------------------------------------------------------------
     | Clave pública de verificación
     |--------------------------------------------------------------------------
     |
