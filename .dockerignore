@@ -1,0 +1,36 @@
+# Lo que NO debe entrar en la imagen.
+#
+# Crítico: sin excluir .env, el archivo local con las credenciales de
+# desarrollo acabaría dentro de la imagen y pisaría las variables que Railway
+# inyecta en el entorno.
+.env
+.env.*
+!.env.example
+
+# Se instalan dentro del contenedor, con las versiones correctas de Linux.
+vendor/
+node_modules/
+
+# Artefactos locales.
+.git/
+.gitignore
+storage/logs/*
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+bootstrap/cache/*
+public/build/
+public/hot
+public/storage
+
+# Volcados de base de datos: datos de clientes y hashes de contraseñas.
+*.sql
+
+# Documentación y configuración de editor.
+*.md
+!README.md
+.editorconfig
+.vscode/
+.idea/
+tests/
+phpunit.xml
