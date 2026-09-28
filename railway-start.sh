@@ -38,7 +38,18 @@ while [ $i -le 30 ]; do
     fi
     if [ $i -eq 30 ]; then
         echo "    ERROR: sin conexión a la base de datos tras 60s."
-        echo "    Revisa las variables DB_* del servicio en Railway."
+        echo ""
+        echo "    Valores recibidos:"
+        echo "      DB_HOST     = ${DB_HOST:-(vacío)}"
+        echo "      DB_PORT     = ${DB_PORT:-(vacío)}"
+        echo "      DB_DATABASE = ${DB_DATABASE:-(vacío)}"
+        echo "      DB_USERNAME = ${DB_USERNAME:-(vacío)}"
+        echo "      DB_PASSWORD = $([ -n "${DB_PASSWORD}" ] && echo "(definida)" || echo "(vacía)")"
+        echo ""
+        echo "    Si DB_HOST muestra algo como \${{...}} sin resolver, las"
+        echo "    variables se copiaron como texto en vez de referenciar al"
+        echo "    servicio. Deben escribirse así, con el nombre del servicio:"
+        echo "      DB_HOST=\${{MySQL.MYSQLHOST}}"
         exit 1
     fi
     sleep 2
