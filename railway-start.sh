@@ -71,6 +71,16 @@ php artisan migrate --force
 
 # Las cachés se regeneran en cada arranque para que recojan las variables de
 # entorno actuales de Railway (que cambian al editar las del servicio).
+# Deja constancia del estado de la licencia en los logs: evita tener que
+# adivinar si una pantalla de "Active su licencia" viene del código desplegado
+# o de una variable de entorno que lo anula.
+LIC=$(php artisan tinker --execute="echo config('licencia.activa') ? 'si' : 'no';" 2>/dev/null | tr -d "[:space:]")
+if [ "$LIC" = "si" ]; then
+    echo "==> Control de licencias: ACTIVO (LICENCIA_ACTIVA=${LICENCIA_ACTIVA:-no definida})"
+else
+    echo "==> Control de licencias: desactivado"
+fi
+
 echo "==> Cacheando configuración"
 php artisan config:cache
 php artisan route:cache
