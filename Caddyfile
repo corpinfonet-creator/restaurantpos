@@ -1,0 +1,26 @@
+# Configuración de Caddy para FrankenPHP.
+#
+# La imagen dunglas/frankenphp trae su propio Caddyfile que sirve en el puerto
+# 80. Railway asigna el puerto por la variable PORT, así que hay que
+# sobrescribirlo: si el servidor no escucha exactamente en ese puerto, el
+# proxy de Railway no encuentra nada y responde 502.
+{
+	# Railway termina el TLS en su proxy; aquí solo se sirve HTTP.
+	auto_https off
+
+	frankenphp
+}
+
+# {$PORT:8080} toma el puerto de la variable de entorno, con 8080 de reserva
+# para ejecutar la imagen en local.
+:{$PORT:8080} {
+	# La raíz es public/, no el proyecto entero: así el .env, el código y las
+	# dependencias quedan fuera del alcance del servidor web.
+	root * /app/public
+
+	# Comprime las respuestas antes de enviarlas.
+	encode zstd gzip
+
+	# Entrega el index.php de Laravel para todo lo que no sea un archivo real.
+	php_server
+}

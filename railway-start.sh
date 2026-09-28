@@ -60,8 +60,8 @@ php artisan view:cache
 # Railway asigna el puerto por la variable PORT; no es fijo.
 echo "==> Servidor escuchando en el puerto ${PORT:-8080}"
 
-# FrankenPHP sirve desde public/, la raíz correcta de Laravel: el resto del
-# proyecto (.env incluido) queda fuera del alcance del servidor web.
-exec frankenphp php-server \
-    --root public/ \
-    --listen "0.0.0.0:${PORT:-8080}"
+# Se arranca con el Caddyfile del proyecto, que ya define la raíz en
+# /app/public y el puerto a partir de $PORT. Antes se usaba `frankenphp
+# php-server`, que ignoraba la configuración de la imagen y dejaba al proxy de
+# Railway sin nada a lo que conectarse (502 "Application failed to respond").
+exec frankenphp run --config /etc/caddy/Caddyfile

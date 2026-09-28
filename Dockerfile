@@ -89,6 +89,10 @@ RUN { \
       echo 'opcache.validate_timestamps=0'; \
     } > /usr/local/etc/php/conf.d/opcache.ini
 
+# El Caddyfile del proyecto sustituye al de la imagen: define la raíz en
+# /app/public y escucha en el puerto que Railway inyecta por $PORT.
+COPY Caddyfile /etc/caddy/Caddyfile
+
 # Laravel necesita escribir en storage/ y bootstrap/cache.
 RUN chmod -R 775 storage bootstrap/cache \
  && chmod +x railway-start.sh railway-scheduler.sh
