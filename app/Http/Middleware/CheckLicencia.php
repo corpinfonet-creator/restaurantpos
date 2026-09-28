@@ -25,14 +25,19 @@ class CheckLicencia
 
     public function handle(Request $request, Closure $next): Response
     {
-        // El control de licencias está desactivado por defecto (ver
-        // config/licencia.php): se rediseñará junto con el soporte
-        // multiempresa, donde lo que se licencia es cada empresa y no la
-        // instalación. Con LICENCIA_ACTIVA=true vuelve a aplicarse todo lo
+        // CONTROL DE LICENCIAS DESACTIVADO.
+        //
+        // Se rediseñará junto con el soporte multiempresa, donde lo que se
+        // licencia es cada empresa y no la instalación.
+        //
+        // La salida es incondicional a propósito: no depende de ninguna
+        // variable de entorno, para que una configuración olvidada en el
+        // servidor no pueda volver a bloquear el sistema. Para reactivarlo
+        // hay que quitar este return, y entonces vuelve a aplicarse todo lo
         // que hay debajo, que se conserva intacto.
-        if (!config('licencia.activa', false)) {
-            return $next($request);
-        }
+        return $next($request);
+
+        /* @phpstan-ignore-next-line Código conservado para el rediseño. */
 
         // Las rutas de activación y salida deben seguir accesibles: si no, un
         // sistema con licencia vencida no podría ni renovarla.
