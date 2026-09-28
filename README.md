@@ -172,13 +172,16 @@ La base arranca vacía. Con `railway run` desde el proyecto enlazado, o desde
 la consola del servicio:
 
 ```bash
-php artisan tinker --execute="
-\App\Models\User::create([
-    'name' => 'Administrador',
-    'email' => 'admin@tudominio.com',
-    'password' => bcrypt('CAMBIA_ESTA_CLAVE'),
-    'role' => 'admin',
-]);"
+php artisan admin:crear --email=admin@tudominio.com
+```
+
+Pide la contraseña de forma oculta, para que no quede en el historial del
+terminal. Si se deja vacía genera una segura y la muestra una sola vez.
+
+También admite pasarlo todo de una vez, útil en scripts:
+
+```bash
+php artisan admin:crear --email=admin@tudominio.com --password=ClaveSegura --name="Administrador"
 ```
 
 ### Notas
