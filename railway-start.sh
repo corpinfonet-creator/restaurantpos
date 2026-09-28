@@ -30,9 +30,9 @@ php artisan storage:link --force
 echo "==> Esperando a la base de datos"
 i=1
 while [ $i -le 30 ]; do
-    if php -r "new PDO(\
-        \"mysql:host=\".getenv(\"DB_HOST\").\";port=\".(getenv(\"DB_PORT\") ?: 3306),\
-        getenv(\"DB_USERNAME\"), getenv(\"DB_PASSWORD\"));" >/dev/null 2>&1; then
+    # Se prueba la conexión con la configuración real de Laravel, así que
+    # funciona igual con DB_URL que con las cinco variables DB_* por separado.
+    if php artisan db:monitor >/dev/null 2>&1; then
         echo "    conectado"
         break
     fi
@@ -45,6 +45,8 @@ while [ $i -le 30 ]; do
         echo "      DB_DATABASE = ${DB_DATABASE:-(vacío)}"
         echo "      DB_USERNAME = ${DB_USERNAME:-(vacío)}"
         echo "      DB_PASSWORD = $([ -n "${DB_PASSWORD}" ] && echo "(definida)" || echo "(vacía)")"
+        echo ""
+        echo "      DB_URL      = $([ -n "${DB_URL}" ] && echo "(definida)" || echo "(vacía)")"
         echo ""
         echo "    Si DB_HOST muestra algo como \${{...}} sin resolver, las"
         echo "    variables se copiaron como texto en vez de referenciar al"
