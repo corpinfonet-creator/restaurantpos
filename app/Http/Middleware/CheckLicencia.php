@@ -25,13 +25,12 @@ class CheckLicencia
 
     public function handle(Request $request, Closure $next): Response
     {
-        // Interruptor general (LICENCIA_ACTIVA=false en el entorno).
-        //
-        // Pensado para puesta en marcha y demostraciones: permite operar el
-        // sistema antes de tener emitida la licencia definitiva. En una
-        // instalación de cliente debe quedar en true, que es el valor por
-        // defecto: si la variable no existe, la comprobación sigue activa.
-        if (!config('licencia.activa', true)) {
+        // El control de licencias está desactivado por defecto (ver
+        // config/licencia.php): se rediseñará junto con el soporte
+        // multiempresa, donde lo que se licencia es cada empresa y no la
+        // instalación. Con LICENCIA_ACTIVA=true vuelve a aplicarse todo lo
+        // que hay debajo, que se conserva intacto.
+        if (!config('licencia.activa', false)) {
             return $next($request);
         }
 

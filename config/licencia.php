@@ -18,16 +18,17 @@ return [
     | Comprobación de licencia activada
     |--------------------------------------------------------------------------
     |
-    | Con LICENCIA_ACTIVA=false el sistema opera sin exigir licencia. Sirve
-    | para la puesta en marcha y para demostraciones, antes de que exista la
-    | licencia definitiva del cliente.
+    | Desactivada por defecto. El control de licencias se rediseñará junto con
+    | el soporte multiempresa, donde la unidad a licenciar deja de ser la
+    | instalación y pasa a ser cada empresa: un único sistema atenderá a
+    | varios clientes, cada uno con su propia vigencia.
     |
-    | El valor por defecto es true: si la variable no está definida, la
-    | comprobación sigue funcionando. Desactivarla debe ser siempre un acto
-    | deliberado y nunca el resultado de un despiste en la configuración.
+    | Hasta entonces el sistema opera sin restricción. El resto del mecanismo
+    | (verificación de firma RSA, periodo de gracia, revalidación diaria) se
+    | conserva intacto y vuelve a funcionar poniendo LICENCIA_ACTIVA=true.
     |
     */
-    'activa' => filter_var(env('LICENCIA_ACTIVA', true), FILTER_VALIDATE_BOOLEAN),
+    'activa' => filter_var(env('LICENCIA_ACTIVA', false), FILTER_VALIDATE_BOOLEAN),
 
     /*
     |--------------------------------------------------------------------------

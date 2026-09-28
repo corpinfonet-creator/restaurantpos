@@ -22,6 +22,11 @@ Artisan::command('inspire', function () {
 |     php artisan schedule:run
 |
 */
-Schedule::command('licencia:revalidar')
-    ->dailyAt('03:30')
-    ->withoutOverlapping();
+// Solo se programa si el control de licencias está activo: con la
+// comprobación desactivada no hay nada que revalidar, y el comando intentaría
+// contactar un servidor de licencias que puede no estar configurado.
+if (config('licencia.activa')) {
+    Schedule::command('licencia:revalidar')
+        ->dailyAt('03:30')
+        ->withoutOverlapping();
+}
