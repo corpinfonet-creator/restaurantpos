@@ -1,0 +1,24 @@
+# Red de seguridad para despliegues donde la raíz del proyecto queda accesible
+# por web (el caso típico: subir todo dentro de public_html en cPanel).
+#
+# La protección correcta es que el document root apunte SOLO a public/. Esto es
+# un seguro por si esa configuración falla: sin él, /.env se descarga en claro
+# con las credenciales de la base de datos.
+
+# Nada de listados de directorio.
+Options -Indexes
+
+# Ficheros sensibles: denegar siempre.
+<FilesMatch "^(\.env.*|\.git.*|composer\.(json|lock)|package(-lock)?\.json|artisan|phpunit\.xml|vite\.config\.js|.*\.sql|.*\.log|.*\.md)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Carpetas que nunca deben servirse por HTTP.
+RewriteEngine On
+RewriteRule ^(app|bootstrap|config|database|resources|routes|storage|tests|vendor)/ - [F,L]
